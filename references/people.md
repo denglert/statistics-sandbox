@@ -11,3 +11,5 @@
 - [Samuel Stanley Wilks](https://en.wikipedia.org/wiki/Samuel_S._Wilks)
 
 - [Harold Jeffreys](https://en.wikipedia.org/wiki/Harold_Jeffreys)
+
+- [Karl Pearson](https://en.wikipedia.org/wiki/Karl_Pearson)
