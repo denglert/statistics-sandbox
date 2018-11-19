@@ -20,3 +20,12 @@
 - https://orinanobworld.blogspot.com/2015/10/ols-oddities.html
 - https://stats.stackexchange.com/questions/266631/what-is-the-difference-between-least-square-and-pseudo-inverse-techniques-for-li
 - http://spartanideas.msu.edu/2015/10/21/regression-via-pseudoinverse/
+
+
+### Residual test
+
+- https://www.quantopian.com/lectures/residual-analysis
+
+#### Heteroscedasticity
+
+- [Breush-Pagan](../tests/Breusch-Pagan/references.md)
