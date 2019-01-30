@@ -1,6 +1,22 @@
 # Textbooks
 
 
+
+## Kendall's Advanced Theory of Statistics
+
+There are multiple editions floating around, as editors and content changed over the years.
+
+Volumes:
+- Volume 1: Distribution Theory
+- Volume 2: Inference and relationship
+
+Some sellers:
+- [nhbs](https://www.nhbs.com/kendalls-advanced-theory-of-statistics-3-volume-set-book)
+- [amazon](https://www.amazon.co.uk/Kendalls-Advanced-Theory-Statistics-Distribution/dp/0470665300)
+
+## Other
+
+
 - [David MacKay: Information Theory, Inference, and Learning Algorithms](http://www.inference.org.uk/itprnn/)
 - Andrew Gelman, David Dunson, Donald Rubin, Hal S. Stern, and John B. Carlin: Bayesian Data Analysis | [amazon](https://www.amazon.co.uk/Bayesian-Analysis-Chapman-Statistical-Science/dp/1439840954/ref=dp_ob_title_bk)
 
