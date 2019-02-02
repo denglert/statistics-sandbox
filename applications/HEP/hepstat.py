@@ -3,6 +3,7 @@
 import numpy as np
 import scipy.stats
 import matplotlib.pyplot as plt
+import scipy.optimize
 from parameter_estimation import confidence_interval as ci
 
 def calc_CI_bounds(n_obs, bkg, alpha=0.05):
@@ -57,3 +58,118 @@ def show_confidence_intervals_with_CLs(experiments, theta_true, xmin_inf = -1e10
     ax[1].set_title(r"One-sided, upper bounded confidence interval")
     
     return fig, ax
+
+
+
+#############################################################################
+
+class SimplePoissonModel:
+
+    def __init__(self, mu, b, s0=1.0):
+        self.b = b
+        self.s0 = s0
+        self.mu = mu
+        self.poisson_lambda = b + s0*mu
+
+    def set_mu(self, mu):
+        self.mu = mu
+        self.poisson_lambda = self.b + self.s0*mu
+
+    def loglikelihood(self, n, mu=None):
+        if mu is None:
+            mu = self.mu
+        poisson_lambda = self.b + self.s0*mu
+        logpmf = np.sum(scipy.stats.poisson.logpmf(k=n, mu=poisson_lambda))
+        return logpmf
+
+    def loglikelihoodmax(self, n):
+        logpmf = np.sum(scipy.stats.poisson.logpmf(k=n, mu=n))
+        return logpmf
+
+    def calc_muhat(self, n):
+        muhat = (n - self.b)/self.s0
+        return muhat
+
+    def calc_tmu(self, n, mu=None):
+        if mu is None:
+            mu = self.mu
+        ll = self.loglikelihood(n, mu=mu)
+        llmax = self.loglikelihoodmax(n)
+        tmu = -2.0 * (ll - llmax)
+        return tmu 
+    
+    def calc_ttildemu(self, n, mu=None):
+        if mu is None:
+            mu = self.mu
+        muhat = self.calc_muhat(n)
+        ll = self.loglikelihood(n, mu=mu)
+        llmax = self.loglikelihoodmax(n)
+        llmu0 = self.loglikelihood(n, mu=0.0)
+
+        if muhat < 0:
+            ttildemu = -2.0 * (ll - llmu0)
+        else:
+            ttildemu = -2.0 * (ll - llmax)
+    
+        return ttildemu
+
+    def calc_q0(self, n):
+        muhat = self.calc_muhat(n)
+        ll = self.loglikelihood(n, mu=0)
+        llmax = self.loglikelihoodmax(n)
+        llmu0 = self.loglikelihood(n, mu=0.0)
+
+        if muhat < 0:
+            ttildemu = 0
+        else:
+            ttildemu = -2.0 * (ll - llmax)
+    
+        return ttildemu
+
+    def calc_qmu(self, n, mu=None):
+
+        if mu is None:
+            mu = self.mu
+
+        muhat = self.calc_muhat(n)
+        ll = self.loglikelihood(n, mu=mu)
+        llmax = self.loglikelihoodmax(n)
+
+        if muhat > mu:
+            qmu = 0
+        else:
+            qmu = -2.0 * (ll - llmax)
+    
+        return qmu
+
+    def calc_gmu(self, n, mu=None):
+
+        if mu is None:
+            mu = self.mu
+
+        muhat = self.calc_muhat(n)
+        lambda_hypo = mu*self.s0 + self.b
+        var_muhat = lambda_hypo/(self.s0**2)
+
+        gmu = (muhat-mu)**2.0/var_muhat
+        return gmu
+
+
+    def calc_qtildemu(self, n, mu=None):
+
+        if mu is None:
+            mu = self.mu
+
+        muhat = self.calc_muhat(n)
+        ll = self.loglikelihood(n, mu=mu)
+        llmax = self.loglikelihoodmax(n)
+        llmu0 = self.loglikelihood(n, mu=0.0)
+
+        if muhat <= 0:
+            qtildemu = -2.0 * (ll - llmu0)
+        elif muhat > 0 and muhat < mu:
+            qtildemu = -2.0 * (ll - llmax)
+        else:
+            qtildemu = 0
+    
+        return qtildemu
